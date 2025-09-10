@@ -1,13 +1,15 @@
+use std::vec;
+
 fn animal_habitat(animal: &str) -> &str {
     // TODO: Fix the compiler error in the statement below.
     let identifier = if animal == "crab" {
         1
     } else if animal == "gopher" {
-        2.0
+        2
     } else if animal == "snake" {
         3
     } else {
-        "Unknown"
+        0
     };
 
     // Don't change the expression below!
@@ -24,6 +26,11 @@ fn animal_habitat(animal: &str) -> &str {
 
 fn main() {
     // You can optionally experiment here.
+    let animals = vec!["crab", "gopher", "car"];
+    for animal in animals.iter() {
+        println!("{}", animal_habitat(animal));
+    }
+
 }
 
 // Don't change the tests!
