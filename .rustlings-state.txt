@@ -1,6 +1,6 @@
 DON'T EDIT THIS FILE!
 
-iterators2
+iterators5
 
 intro1
 intro2
@@ -57,7 +57,6 @@ errors2
 errors3
 errors4
 errors5
-<<<<<<< HEAD
 errors6
 generics1
 generics2
@@ -74,6 +73,6 @@ tests1
 tests2
 tests3
 iterators1
-=======
-errors6
->>>>>>> 87be7d1 (temp)
+iterators2
+iterators3
+iterators4
