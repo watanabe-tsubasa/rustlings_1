@@ -4,7 +4,14 @@ macro_rules! my_macro {
     };
 }
 
+macro_rules! second_macro {
+    () => {
+        println!("made by original.");
+    };
+}
+
 fn main() {
     // TODO: Fix the macro call.
-    my_macro();
+    my_macro!();
+    second_macro!();
 }
