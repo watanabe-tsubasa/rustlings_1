@@ -36,17 +36,18 @@ impl Default for Person {
 impl From<&str> for Person {
     fn from(s: &str) -> Self {
         let elems: Vec<&str> = s.split(',').collect();
-        if elems.len() > 2 {
-            Self::default()
-        } else {
-            match elems[1].parse::<u8>() {
-                Ok(age) => match Some(elems[0]) {
-                    Some(_) => Self { name: elems[0].to_owned(), age: age },
-                    None => Self::default(),
-                },
-                Err(_) => Self::default(),
+        println!("{:?}", elems);
+        if elems.len() == 2 {
+            // 年齢をパース
+            if let (Some(name), Some(age_str)) = (elems.get(0), elems.get(1)) {
+                if let Ok(age) = age_str.parse::<u8>() {
+                    if !name.is_empty() {
+                        return Self { name: name.to_string(), age}
+                    } 
+                }
             }
         }
+        Self::default()
     }
 }
 
@@ -58,6 +59,15 @@ fn main() {
     // Since `From` is implemented for Person, we are able to use `Into`.
     let p2: Person = "Gerald,70".into();
     println!("{p2:?}");
+
+    let p3: Person = "Mark".into();
+    println!("{p3:?}");
+
+    let p4 = Person::from("");
+    println!("{:?}", p4);
+
+    let p5: Person = Person::from("Mike,32,dog");
+    println!("{:?}", p5);
 }
 
 #[cfg(test)]
