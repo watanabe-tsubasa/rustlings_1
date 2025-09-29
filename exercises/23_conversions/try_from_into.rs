@@ -23,13 +23,24 @@ enum IntoColorError {
     IntConversion,
 }
 
+impl Color {
+    fn from_i16_array (arr: [i16; 3]) -> Result<Self, IntoColorError> {
+        if arr.iter().all(|v| (0..=255).contains(v)) {
+            Ok(Self { red: arr[0] as u8, green: arr[1] as u8, blue: arr[2] as u8 })
+        } else {
+            Err(IntoColorError::IntConversion)
+        }
+    }
+}
+
 // TODO: Tuple implementation.
 // Correct RGB color values must be integers in the 0..=255 range.
 impl TryFrom<(i16, i16, i16)> for Color {
     type Error = IntoColorError;
 
     fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {
-        Ok(Self { red: tuple.0 as u8, green: tuple.1 as u8, blue: tuple.2 as u8 })
+        let arr = [tuple.0, tuple.1, tuple.2];
+        Color::from_i16_array(arr)
     }
 }
 
@@ -38,7 +49,7 @@ impl TryFrom<[i16; 3]> for Color {
     type Error = IntoColorError;
 
     fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {
-        Ok(Self { red: arr[0] as u8, green: arr[1] as u8, blue: arr[2] as u8 })
+        Color::from_i16_array(arr)
     }
 }
 
@@ -49,7 +60,11 @@ impl TryFrom<&[i16]> for Color {
 
     fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {
         match slice {
-            [red_b, green_b, blue_b] => ,
+            [red_b, green_b, blue_b] => {
+                Color::from_i16_array(
+                    [*red_b, *green_b, *blue_b]
+                )
+            }
             _ => Err(IntoColorError::BadLen)
         }
     }
@@ -59,6 +74,9 @@ fn main() {
     // Using the `try_from` function.
     let c1 = Color::try_from((183, 65, 14));
     println!("{c1:?}");
+
+    let c1_e = Color::try_from((256, 1000, 10000));
+    println!("{c1_e:?}");
 
     // Since `TryFrom` is implemented for `Color`, we can use `TryInto`.
     let c2: Result<Color, _> = [183, 65, 14].try_into();
